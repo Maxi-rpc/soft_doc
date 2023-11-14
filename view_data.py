@@ -181,12 +181,3 @@ class data_view:
     def edit_user(self):
         print('a editar user')
 
-    # User Input Validation
-    def validation(self):
-        return len(self.name.get()) != 0 and len(self.password.get()) != 0
-    
-    def login(self):
-        if self.validation():
-            print(self.name.get(), self.password.get())
-        else:
-            self.message['text'] = 'Completar campos'
