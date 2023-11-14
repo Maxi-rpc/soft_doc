@@ -1,7 +1,6 @@
 # imports
 import tkinter as tk
 from view_data import data_view
-
 from db_utils import db_config
 import mysql.connector
 
