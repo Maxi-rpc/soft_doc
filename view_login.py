@@ -2,6 +2,8 @@
 import tkinter as tk
 from view_data import data_view
 
+from db_utils import db_config
+import mysql.connector
 
 class login_view:
     def __init__(self, window):
@@ -30,7 +32,27 @@ class login_view:
 
         # Output Message
         self.message = tk.Label(text = '', fg = 'red')
-        self.message.grid(row = 3, column = 2, columnspan = 2, sticky = tk.W + tk.E)
+        self.message.grid(row = 3, column = 0, columnspan = 6, sticky = tk.W + tk.E)
+
+    # get user
+    def search_user(self):
+        usr = self.name.get()
+        psw = self.password.get()
+
+        cnx = mysql.connector.connect(
+                host = db_config['host'],
+                user = db_config['user'], 
+                database = db_config['database']
+            )
+        cursor = cnx.cursor()
+        query = f"SELECT * FROM users WHERE User = '{usr}' AND Pass = '{psw}'"
+        cursor.execute(query)
+        data = []
+        for row in cursor:
+            data.append(row)
+        cursor.close()    
+        cnx.close()
+        return data
 
     # User Input Validation
     def validation(self):
@@ -38,8 +60,12 @@ class login_view:
     
     def login(self):
         if self.validation():
-            user=self.name.get()
-            self.wind.destroy()
-            data_view(user=user)
+            res = self.search_user()
+            if len(res) > 0:
+                user=self.name.get()
+                self.wind.destroy()
+                data_view(user=user)
+            else:
+                self.message['text'] = 'Nombre o Contraseña incorrectos'
         else:
             self.message['text'] = 'Completar campos'

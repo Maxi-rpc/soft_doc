@@ -10,8 +10,6 @@ configScreen = {
     'widthXheight': '600x500'
 }
 
-# functions
-
 # main
 def main():
     # tk
