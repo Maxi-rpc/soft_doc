@@ -25,11 +25,6 @@ class admin_view:
         self.userList.current()
         self.userList.grid(row = 1, column = 1)
 
-        #self.user = tk.Entry(frame)
-        #self.user.insert(0, self.datos['User'])
-        #self.userList.grid(row = 1, column = 1)
-        #self.userList.config(state='readonly')
-
         # Button
         tk.Button(frame, text = 'Buscar', command = self.get_data).grid(row = 3, columnspan = 2, sticky = tk.W + tk.E)
 
