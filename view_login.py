@@ -1,6 +1,7 @@
 # imports
 import tkinter as tk
 from view_data import data_view
+from view_admin import admin_view
 from db_utils import db_config
 import mysql.connector
 
@@ -62,6 +63,9 @@ class login_view:
             res = self.search_user()
             if len(res) > 0:
                 user=self.name.get()
+                if user == 'admin':
+                    self.wind.destroy()
+                    admin_view()
                 self.wind.destroy()
                 data_view(user=user)
             else:

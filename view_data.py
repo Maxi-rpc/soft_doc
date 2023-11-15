@@ -110,8 +110,8 @@ class data_view:
         frame_btn = tk.Frame(self.wind)
         frame_btn.grid(row = 8, column = 0, columnspan = 2)
         # Button Add Product 
-        btnEdit = tk.Button(frame_btn, text = 'Editar', command = self.edit_user)
-        btnEdit.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E)
+        btnConsejo = tk.Button(frame_btn, text = 'Consejo', command = self.edit_user)
+        btnConsejo.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E)
 
 
         self.wind.mainloop()
