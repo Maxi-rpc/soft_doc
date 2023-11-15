@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 15-11-2023 a las 01:46:25
+-- Tiempo de generación: 15-11-2023 a las 23:27:23
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `persona` (
 --
 
 INSERT INTO `persona` (`User`, `Nombre`, `Edad`) VALUES
-('Guada', 'Guadalupe Kiara', 16);
+('guada', 'Guadalupe Kiara', 16);
 
 -- --------------------------------------------------------
 
@@ -98,14 +98,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `User` varchar(255) NOT NULL,
   `Pass` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`Id`, `User`, `Pass`) VALUES
-(1, 'Guada', 'guada');
+(1, 'guada', 'guada'),
+(2, 'admin', 'admin');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
