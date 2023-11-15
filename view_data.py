@@ -105,14 +105,6 @@ class data_view:
         self.libr.grid(row = 3, column = 1)
         self.libr.config(state='disabled')
 
-        ### Editar
-        # Frame Container 
-        frame_btn = tk.Frame(self.wind)
-        frame_btn.grid(row = 8, column = 0, columnspan = 2)
-        # Button
-        btnConsejo = tk.Button(frame_btn, text = 'Consejo', command = self.edit_user)
-        btnConsejo.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E)
-
 
         self.wind.mainloop()
 
@@ -178,6 +170,3 @@ class data_view:
         cnx.close()
         return data
     
-    def edit_user(self):
-        print('a editar user')
-
