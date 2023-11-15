@@ -27,7 +27,7 @@ class login_view:
         self.password.grid(row = 2, column = 1)
         self.password.config(show='*')
 
-        # Button Add Product 
+        # Button
         tk.Button(frame, text = 'Iniciar', command = self.login).grid(row = 3, columnspan = 2, sticky = tk.W + tk.E)
 
         # Output Message

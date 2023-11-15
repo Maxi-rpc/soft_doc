@@ -36,14 +36,14 @@ class data_view:
         frame = tk.LabelFrame(self.wind, text = 'Datos del usuario')
         frame.grid(row = 0, column = 0, pady = 10)
 
-        # text name
+        # text User
         tk.Label(frame, text = 'User: ').grid(row = 1, column = 0)
         self.user = tk.Entry(frame)
         self.user.insert(0, self.datos['User'])
         self.user.grid(row = 1, column = 1)
         self.user.config(state='readonly')
 
-        # text edad
+        # text nombre
         tk.Label(frame, text = 'Nombre: ').grid(row = 2, column = 0)
         self.name = tk.Entry(frame)
         self.name.insert(0, self.datos['Nombre'])
@@ -109,7 +109,7 @@ class data_view:
         # Frame Container 
         frame_btn = tk.Frame(self.wind)
         frame_btn.grid(row = 8, column = 0, columnspan = 2)
-        # Button Add Product 
+        # Button
         btnConsejo = tk.Button(frame_btn, text = 'Consejo', command = self.edit_user)
         btnConsejo.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E)
 
