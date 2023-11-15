@@ -7,16 +7,20 @@ db_config = {
     'database': 'db_python'
 }
 
-def conectar():
-    cnx = mysql.connector.connect(
-        host= db_config['host'],
-        user= db_config['user'], 
-        database= db_config['database']
-    )
-
-    print(cnx)
-    ## cerrar conexion
-    cnx.close() 
+def test_conect():
+    try:
+        cnx = mysql.connector.connect(
+            host= db_config['host'],
+            user= db_config['user'], 
+            database= db_config['database']
+        )
+        msj = f'Conexion OK {cnx}'
+        print(msj)
+        ## cerrar conexion
+        cnx.close()
+    except Exception as e:
+        msj = f'No se pudo conectar a la base de datos: {e}'
+        print(msj)
 
 def querys():
     cnx = mysql.connector.connect(

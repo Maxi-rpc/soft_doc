@@ -1,6 +1,7 @@
 # imports
 import tkinter as tk
 from view_login import login_view
+from db_utils import test_conect
 
 # config ventana
 configScreen = {
@@ -12,6 +13,8 @@ configScreen = {
 
 # main
 def main():
+    # prueba de conneccion a db
+    test_conect()
     # tk
     root = tk.Tk()
     root.title(configScreen['title'])
