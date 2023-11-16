@@ -18,7 +18,8 @@ userProgress = {
 userConsejo = {
     'Problema': userProgress['Problema'],
     'Consejo': 'cambiar dieta',
-    'Actividad': 'hacer futbol pa'
+    'Actividad': 'hacer futbol pa',
+    'Libro': 'libro de harry'
 }
 
 class data_view:
@@ -34,7 +35,7 @@ class data_view:
         ### Persona
         # Frame Container 
         frame = tk.LabelFrame(self.wind, text = 'Datos del usuario')
-        frame.grid(row = 0, column = 0, pady = 10)
+        frame.grid(row = 0, column = 0)
 
         # text User
         tk.Label(frame, text = 'User: ').grid(row = 1, column = 0)

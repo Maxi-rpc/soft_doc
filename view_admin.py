@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from db_utils import db_config
 import mysql.connector
+from view_new_user import new_user_view
 
 class admin_view:
     def __init__(self):
@@ -32,7 +33,7 @@ class admin_view:
         self.datos = {}
         # Frame Container 
         frame = tk.LabelFrame(self.wind, text = 'Datos del usuario')
-        frame.grid(row = 3, column = 0, pady = 10)
+        frame.grid(row = 3, column = 0)
 
         # text nombre
         tk.Label(frame, text = 'Nombre: ').grid(row = 1, column = 0)
@@ -84,10 +85,13 @@ class admin_view:
         ### Editar
         # Frame Container 
         frame_btn = tk.Frame(self.wind)
-        frame_btn.grid(row = 13, column = 0, columnspan = 2)
+        frame_btn.grid(row = 13, column = 0, columnspan = 4)
         # Button
-        btnConsejo = tk.Button(frame_btn, text = 'Editar', command = self.update_data)
-        btnConsejo.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E)
+        btnEditar = tk.Button(frame_btn, text = 'Editar', command = self.update_data)
+        btnEditar.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E, padx = 10)
+        # Button
+        btnAgregar = tk.Button(frame_btn, text = 'Nuevo registro', command = self.new_user)
+        btnAgregar.grid(row = 1, column=0, columnspan = 2, sticky = tk.W + tk.E)
 
         # Output Message
         frame_msg = tk.Frame(self.wind)
@@ -226,3 +230,23 @@ class admin_view:
         cursor.close()    
         cnx.close()
         return isSave
+    
+    def new_user(self):
+        # self.wind.destroy()
+        new_user_view()
+        #abrir_ventana_secundaria()
+
+def abrir_ventana_secundaria():
+    # Crear una ventana secundaria.
+    #ventana_secundaria = tk.Toplevel()
+    # ventana_secundaria.title("Ventana secundaria")
+    # ventana_secundaria.config(width=300, height=200)
+    new_user_view()
+    # Crear un botón dentro de la ventana secundaria
+    # para cerrar la misma.
+    # boton_cerrar = ttk.Button(
+    #     ventana_secundaria,
+    #     text="Cerrar ventana", 
+    #     command=ventana_secundaria.destroy
+    # )
+    # boton_cerrar.place(x=75, y=75)

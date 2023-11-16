@@ -16,7 +16,7 @@ class login_view:
         frame.grid(row = 0, column = 0, columnspan = 6, pady = 50, padx= 50)
 
         # input name
-        tk.Label(frame, text = 'Nombre: ').grid(row = 1, column = 0)
+        tk.Label(frame, text = 'User: ').grid(row = 1, column = 0)
         self.name = tk.Entry(frame)
         self.name.focus()
         self.name.grid(row = 1, column = 1)
