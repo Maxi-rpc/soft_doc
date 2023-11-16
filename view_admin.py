@@ -118,9 +118,22 @@ class admin_view:
         cnx.close()
         return data
     
+
+    def clean_inputs(self):
+        self.name.delete('1.0', tk.END)
+        self.age.delete('1.0', tk.END)
+        self.prob.delete('1.0', tk.END)
+        self.objet.delete('1.0', tk.END)
+        self.consej.delete('1.0', tk.END)
+        self.activ.delete('1.0', tk.END)
+        self.libr.delete('1.0', tk.END) 
+
     def get_data(self):
+        #self.clean_inputs()
+
         usr = self.userList.get()
         data = self.get_user_persona(username=usr)
+        print(data)
         self.datos['Nombre'] = data['Nombre']
         self.name.insert(0, self.datos['Nombre'])
         
@@ -234,19 +247,4 @@ class admin_view:
     def new_user(self):
         # self.wind.destroy()
         new_user_view()
-        #abrir_ventana_secundaria()
-
-def abrir_ventana_secundaria():
-    # Crear una ventana secundaria.
-    #ventana_secundaria = tk.Toplevel()
-    # ventana_secundaria.title("Ventana secundaria")
-    # ventana_secundaria.config(width=300, height=200)
-    new_user_view()
-    # Crear un botón dentro de la ventana secundaria
-    # para cerrar la misma.
-    # boton_cerrar = ttk.Button(
-    #     ventana_secundaria,
-    #     text="Cerrar ventana", 
-    #     command=ventana_secundaria.destroy
-    # )
-    # boton_cerrar.place(x=75, y=75)
+        
