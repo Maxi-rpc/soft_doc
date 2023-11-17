@@ -83,12 +83,12 @@ class new_user_view:
         frame_btn = tk.Frame(self.wind)
         frame_btn.grid(row = 13, column = 0, columnspan = 4)
         # Button
-        btnEditar = tk.Button(frame_btn, text = 'Agregar registro', command = self.add_data)
-        btnEditar.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E, padx = 10)
+        btnEditar = tk.Button(frame_btn, text = 'Guardar registro', command = self.add_data)
+        btnEditar.grid(row = 0, column=0, columnspan = 2, padx = 10)
 
         # Button
         btnCerrar = tk.Button(frame_btn, text = 'Volver', command = self.wind.destroy)
-        btnCerrar.grid(row = 1, column=0, columnspan = 2, sticky = tk.W + tk.E, padx = 10)
+        btnCerrar.grid(row = 0, column=3, columnspan = 2, padx = 10)
 
         # Output Message
         frame_msg = tk.Frame(self.wind)

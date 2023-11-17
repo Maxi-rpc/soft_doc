@@ -87,11 +87,11 @@ class admin_view:
         frame_btn = tk.Frame(self.wind)
         frame_btn.grid(row = 13, column = 0, columnspan = 4)
         # Button
-        btnEditar = tk.Button(frame_btn, text = 'Editar', command = self.update_data)
-        btnEditar.grid(row = 0, column=0, columnspan = 2, sticky = tk.W + tk.E, padx = 10)
+        btnEditar = tk.Button(frame_btn, text = 'Editar registro', command = self.update_data)
+        btnEditar.grid(row = 0, column=0, columnspan = 2, padx = 10)
         # Button
         btnAgregar = tk.Button(frame_btn, text = 'Nuevo registro', command = self.new_user)
-        btnAgregar.grid(row = 1, column=0, columnspan = 2, sticky = tk.W + tk.E)
+        btnAgregar.grid(row = 0, column=3, columnspan = 2)
 
         # Output Message
         frame_msg = tk.Frame(self.wind)
