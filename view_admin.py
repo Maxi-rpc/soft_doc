@@ -120,8 +120,8 @@ class admin_view:
     
 
     def clean_inputs(self):
-        self.name.delete('1.0', tk.END)
-        self.age.delete('1.0', tk.END)
+        self.name.delete(0, tk.END)
+        self.age.delete(0, tk.END)
         self.prob.delete('1.0', tk.END)
         self.objet.delete('1.0', tk.END)
         self.consej.delete('1.0', tk.END)
@@ -129,7 +129,7 @@ class admin_view:
         self.libr.delete('1.0', tk.END) 
 
     def get_data(self):
-        #self.clean_inputs()
+        self.clean_inputs()
 
         usr = self.userList.get()
         data = self.get_user_persona(username=usr)
