@@ -93,6 +93,10 @@ class admin_view:
         btnAgregar = tk.Button(frame_btn, text = 'Nuevo registro', command = self.new_user)
         btnAgregar.grid(row = 0, column=3, columnspan = 2)
 
+        # Button
+        btnCerrar = tk.Button(frame_btn, text = 'Cerrar sesion', command = self.exit_session)
+        btnCerrar.grid(row = 1, column=3, columnspan = 2)
+
         # Output Message
         frame_msg = tk.Frame(self.wind)
         frame_msg.grid(row = 15, column = 0, columnspan = 2)
@@ -155,7 +159,7 @@ class admin_view:
         self.activ.insert(tk.END, self.consejos['Actividad'])
 
         self.consejos['Libro'] = consej['Libro']
-        self.libr.insert(tk.END, self.consejos['Libro'])       
+        self.libr.insert(tk.END, self.consejos['Libro'])    
 
     def get_user_persona(self, username):
         usr = username
@@ -245,6 +249,8 @@ class admin_view:
         return isSave
     
     def new_user(self):
-        # self.wind.destroy()
         new_user_view()
+
+    def exit_session(self):
+        self.wind.destroy()
         

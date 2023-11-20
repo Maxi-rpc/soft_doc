@@ -106,6 +106,15 @@ class data_view:
         self.libr.grid(row = 3, column = 1)
         self.libr.config(state='disabled')
 
+        ### Buttons
+        # Frame Container 
+        frame_btn = tk.Frame(self.wind)
+        frame_btn.grid(row = 12, column = 0, columnspan = 4)
+
+        # Button
+        btnCerrar = tk.Button(frame_btn, text = 'Cerrar Sesion', command = self.exit_session)
+        btnCerrar.grid(row = 0, column=3, columnspan = 2, padx = 10)
+
 
         self.wind.mainloop()
 
@@ -171,3 +180,5 @@ class data_view:
         cnx.close()
         return data
     
+    def exit_session(self):
+        self.wind.destroy()
