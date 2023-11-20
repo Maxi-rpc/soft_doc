@@ -1,6 +1,7 @@
 # imports
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from db_utils import db_config, run_query
 import mysql.connector
 from view_new_user import new_user_view
@@ -94,12 +95,12 @@ class admin_view:
         btnAgregar.grid(row = 0, column=3, columnspan = 2)
 
         # Button
-        btnAgregar = tk.Button(frame_btn, text = 'Nuevo registro', command = self.new_user)
-        btnAgregar.grid(row = 0, column=3, columnspan = 2)
+        btnEliminar = tk.Button(frame_btn, text = 'Eliminar registro', command = self.delete_user)
+        btnEliminar.grid(row = 0, column=5, columnspan = 2, padx = 10)
 
         # Button
         btnCerrar = tk.Button(frame_btn, text = 'Cerrar sesion', command = self.exit_session)
-        btnCerrar.grid(row = 0, column=5, columnspan = 2, padx = 10)
+        btnCerrar.grid(row = 0, column=7, columnspan = 2, padx = 10)
 
         # Output Message
         frame_msg = tk.Frame(self.wind)
@@ -118,7 +119,6 @@ class admin_view:
             data.append(User[0])
         return data
     
-
     def clean_inputs(self):
         self.name.delete(0, tk.END)
         self.age.delete(0, tk.END)
@@ -191,6 +191,18 @@ class admin_view:
             data['Libro'] = Libro
         return data
     
+    def get_user_login(self):
+        usr = self.userList.get()
+        query = f"SELECT * FROM users WHERE User = '{usr}'"
+        dataDB = run_query(query)
+        data = {}
+        for (Id, User, Pass) in dataDB:
+            data['Id'] = Id
+            data['User'] = User
+            data['Pass'] = Pass
+        return data
+
+
     def update_data(self):
         usr = self.userList.get()
         nombre = self.name.get()
@@ -215,7 +227,35 @@ class admin_view:
         new_user_view()
 
     def delete_user(self):
-        print('delete')
+        usr = self.userList.get()
+        user = self.get_user_login()
+        id = user['Id']
+        msj = f'Eliminar registro: {usr}'
+        msgb = messagebox.askquestion('Alerta', msj, parent=self.wind)
+        if msgb == 'yes':
+            usr = self.userList.get()
+
+            query = f"DELETE FROM users WHERE Id = '{id}'"
+            self.delete_sql(query)
+
+            query1 = f"DELETE FROM persona WHERE User = '{usr}'"
+            self.delete_sql(query1)
+
+            query2 = f"DELETE FROM progreso WHERE User = '{usr}'"
+            self.delete_sql(query2)
+
+            self.message['text'] = f'Se elimino registro correctamente'
+            self.clean_inputs()
+            print('delete')
+
+    def delete_sql(self, query):
+        isSave = False
+        try:
+            run_query(query)
+            isSave = True
+        except Exception as e:
+            self.message['text'] = f'Error al eliminar datos {e}'
+        return isSave
 
     def exit_session(self):
         self.wind.destroy()
