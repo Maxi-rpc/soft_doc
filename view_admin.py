@@ -1,7 +1,7 @@
 # imports
 import tkinter as tk
 from tkinter import ttk
-from db_utils import db_config
+from db_utils import db_config, run_query
 import mysql.connector
 from view_new_user import new_user_view
 
@@ -163,62 +163,37 @@ class admin_view:
 
     def get_user_persona(self, username):
         usr = username
-        cnx = mysql.connector.connect(
-                host = db_config['host'],
-                user = db_config['user'], 
-                database = db_config['database']
-            )
-        cursor = cnx.cursor()
         query = f"SELECT * FROM persona WHERE User = '{usr}'"
-        cursor.execute(query)
+        dataDB = run_query(query)
         data = {}
-        for (User, Nombre, Edad) in cursor:
+        for (User, Nombre, Edad) in dataDB:
             data['User'] = User
             data['Nombre'] = Nombre
             data['Edad'] = Edad
-
-        cursor.close()    
-        cnx.close()
         return data
     
     def get_user_progreso(self, username):
         usr = username
-        cnx = mysql.connector.connect(
-                host = db_config['host'],
-                user = db_config['user'], 
-                database = db_config['database']
-            )
-        cursor = cnx.cursor()
+
         query = f"SELECT * FROM progreso WHERE User = '{usr}'"
-        cursor.execute(query)
+        dataDB = run_query(query)
         data = {}
-        for (User, Problema, Objetivo) in cursor:
+        for (User, Problema, Objetivo) in dataDB:
             data['Problema'] = Problema
             data['Objetivo'] = Objetivo
-
-        cursor.close()    
-        cnx.close()
         return data
     
     def get_user_consejos(self, probl):
         prob = probl
-        cnx = mysql.connector.connect(
-                host = db_config['host'],
-                user = db_config['user'], 
-                database = db_config['database']
-            )
-        cursor = cnx.cursor()
+
         query = f"SELECT * FROM consejos WHERE Problema = '{prob}'"
-        cursor.execute(query)
+        dataDB = run_query(query)
         data = {}
-        for (Problema, Descripcion, Consejo, Actividad, Libro) in cursor:
+        for (Problema, Descripcion, Consejo, Actividad, Libro) in dataDB:
             data['Descripcion'] = Descripcion
             data['Consejo'] = Consejo
             data['Actividad'] = Actividad
             data['Libro'] = Libro
-
-        cursor.close()    
-        cnx.close()
         return data
     
     def update_data(self):
@@ -233,20 +208,12 @@ class admin_view:
             self.message.config(fg = 'green')
 
     def update_sql(self, query):
-        cnx = mysql.connector.connect(
-            host = db_config['host'],
-            user = db_config['user'], 
-            database = db_config['database']
-        )
-        cursor = cnx.cursor()
         isSave = False
         try:
-            cursor.execute(query)
+            run_query(query)
             isSave = True
         except Exception as e:
             self.message['text'] = f'Error al guardar datos {e}'
-        cursor.close()    
-        cnx.close()
         return isSave
     
     def new_user(self):
