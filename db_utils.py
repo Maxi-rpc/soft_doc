@@ -12,7 +12,8 @@ def test_conect():
     try:
         cnx = mysql.connector.connect(
             host= db_config['host'],
-            user= db_config['user'], 
+            user= db_config['user'],
+            password= db_config['password'], 
             database= db_config['database']
         )
         msj = f'Conexion OK {cnx}'
@@ -22,23 +23,6 @@ def test_conect():
     except Exception as e:
         msj = f'No se pudo conectar a la base de datos: {e}'
         print(msj)
-
-def query_example():
-    cnx = mysql.connector.connect(
-        host= db_config['host'],
-        user= db_config['user'], 
-        database= db_config['database']
-    )
-    cursor = cnx.cursor()
-
-    query = ("SELECT * FROM users")
-    cursor.execute(query)
-
-    for (id, user, password) in cursor:
-        print(f'user: {user} - pass: {password}')
-
-    cursor.close()    
-    cnx.close() 
 
 def run_query(query):
     cnx = mysql.connector.connect(
@@ -55,3 +39,8 @@ def run_query(query):
     cursor.close()    
     cnx.close() 
     return data
+
+def query_example():
+    query = "SELECT * FROM users"
+    data = run_query(query)
+    print(data)
