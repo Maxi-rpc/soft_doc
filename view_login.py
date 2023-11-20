@@ -2,7 +2,7 @@
 import tkinter as tk
 from view_data import data_view
 from view_admin import admin_view
-from db_utils import db_config
+from db_utils import db_config, run_query
 import mysql.connector
 
 class login_view:
@@ -38,20 +38,8 @@ class login_view:
     def search_user(self):
         usr = self.name.get()
         psw = self.password.get()
-
-        cnx = mysql.connector.connect(
-                host = db_config['host'],
-                user = db_config['user'], 
-                database = db_config['database']
-            )
-        cursor = cnx.cursor()
         query = f"SELECT * FROM users WHERE User = '{usr}' AND Pass = '{psw}'"
-        cursor.execute(query)
-        data = []
-        for row in cursor:
-            data.append(row)
-        cursor.close()    
-        cnx.close()
+        data = run_query(query)
         return data
 
     # User Input Validation

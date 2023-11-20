@@ -4,7 +4,7 @@ import mysql.connector
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': '',
+    'password': '', ## si es necesario
     'database': 'db_python'
 }
 
@@ -23,7 +23,7 @@ def test_conect():
         msj = f'No se pudo conectar a la base de datos: {e}'
         print(msj)
 
-def querys():
+def query_example():
     cnx = mysql.connector.connect(
         host= db_config['host'],
         user= db_config['user'], 
@@ -43,7 +43,8 @@ def querys():
 def run_query(query):
     cnx = mysql.connector.connect(
         host= db_config['host'],
-        user= db_config['user'], 
+        user= db_config['user'],
+        password= db_config['password'], 
         database= db_config['database']
     )
     cursor = cnx.cursor()
@@ -53,6 +54,4 @@ def run_query(query):
         data.append(row)
     cursor.close()    
     cnx.close() 
-    if len(data) > 1:
-        return data
-    return data[0]
+    return data
