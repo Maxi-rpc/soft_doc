@@ -32,15 +32,25 @@ class new_user_view:
         frame_prog = tk.LabelFrame(self.wind, text = 'Progreso')
         frame_prog.grid(row = 3, column = 0, columnspan = 3, pady = 10)
 
-        # text problema
+        # lista problema
+        self.listProblemas = self.list_problemas()
         tk.Label(frame_prog, text = 'Problema: ').grid(row = 1, column = 0)
-        self.prob = tk.Text(frame_prog, height=1, width=40)
+
+        self.prob = ttk.Combobox(frame_prog, height= 1, width = 27, textvariable = tk.StringVar())
+        self.prob['values'] = self.listProblemas
+        self.prob.current()
         self.prob.grid(row = 1, column = 1)
+        self.prob.bind("<<ComboboxSelected>>", func=self.complete_data)
+
+        # text descripcion
+        tk.Label(frame_prog, text = 'Descripcion: ').grid(row = 2, column = 0)
+        self.descrip = tk.Text(frame_prog, height=4, width=50)
+        self.descrip.grid(row = 2, column = 1)
 
         # text objetivo
-        tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 2, column = 0)
-        self.objet = tk.Text(frame_prog, height=2, width=40)
-        self.objet.grid(row = 2, column = 1)
+        tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 3, column = 0)
+        self.objet = tk.Text(frame_prog, height=2, width=50)
+        self.objet.grid(row = 3, column = 1)
 
 
         ### Consejo
@@ -50,18 +60,13 @@ class new_user_view:
 
         # text consejo
         tk.Label(frame_prog, text = 'Consejo: ').grid(row = 1, column = 0)
-        self.consej = tk.Text(frame_prog, height=3, width=50)
+        self.consej = tk.Text(frame_prog, height=4, width=50)
         self.consej.grid(row = 1, column = 1)
 
-        # text actividad
-        tk.Label(frame_prog, text = 'Actividad: ').grid(row = 2, column = 0)
-        self.activ = tk.Text(frame_prog, height=3, width=50)
-        self.activ.grid(row = 2, column = 1)
-
         # text libro
-        tk.Label(frame_prog, text = 'Libro: ').grid(row = 3, column = 0)
+        tk.Label(frame_prog, text = 'Libro: ').grid(row = 2, column = 0)
         self.libr = tk.Text(frame_prog, height=1, width=50)
-        self.libr.grid(row = 3, column = 1)
+        self.libr.grid(row = 2, column = 1)
 
         # user login
         # Frame Container 
@@ -96,6 +101,30 @@ class new_user_view:
         self.message = tk.Label(frame_msg, text = '', fg = 'red')
         self.message.grid(row = 3, column = 0, columnspan = 6, sticky = tk.W + tk.E)
 
+    def list_problemas(self):
+        query = f"SELECT Problema FROM consejos"
+        dataDB = run_query(query)
+        data = []
+        for (Problema) in dataDB:
+            data.append(Problema[0])
+        return data
+    
+    def complete_data(self, event):
+        probl = event.widget.get()
+        data = self.get_user_consejos(probl)
+        self.descrip.insert(tk.END, data['Descripcion'])
+        self.consej.insert(tk.END, data['Consejo'])
+        self.libr.insert(tk.END, data['Libro'])
+    
+    def get_user_consejos(self, probl):
+        query = f"SELECT * FROM consejos WHERE Problema = '{probl}'"
+        dataDB = run_query(query)
+        data = {}
+        for (Problema, Descripcion, Consejo, Libro) in dataDB:
+            data['Descripcion'] = Descripcion
+            data['Consejo'] = Consejo
+            data['Libro'] = Libro
+        return data
     
     def add_data(self):
         # users
@@ -113,22 +142,11 @@ class new_user_view:
 
 
         # progreso
-        prob = self.prob.get('1.0', tk.END)
-        prob = prob.rstrip()
+        prob = self.prob.get()
         obje = self.objet.get('1.0', tk.END)
         obje = obje.rstrip()
         query3 = f"INSERT INTO progreso (`User`, `Problema`, `Objetivo`) VALUES ('{usr}', '{prob}', '{obje}')"
-        self.add_sql(query=query3)
-
-        # consej
-        consj = self.consej.get('1.0', tk.END)
-        consj = consj.rstrip()
-        act = self.activ.get('1.0', tk.END)
-        act = act.rstrip()
-        libr = self.libr.get('1.0', tk.END)
-        libr = libr.rstrip()
-        query4 = f"INSERT INTO consejos (`Problema`, `Consejo`, `Actividad`, `Libro`) VALUES ('{prob}', '{consj}', '{act}', '{libr}')"
-        save = self.add_sql(query=query4)
+        save = self.add_sql(query=query3)
 
         if save:
             self.message['text'] = f'Se agregan datos'
