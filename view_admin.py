@@ -95,7 +95,7 @@ class admin_view:
 
         # Button
         btnCerrar = tk.Button(frame_btn, text = 'Cerrar sesion', command = self.exit_session)
-        btnCerrar.grid(row = 1, column=3, columnspan = 2)
+        btnCerrar.grid(row = 0, column=5, columnspan = 2, padx = 10)
 
         # Output Message
         frame_msg = tk.Frame(self.wind)
@@ -211,7 +211,8 @@ class admin_view:
         query = f"SELECT * FROM consejos WHERE Problema = '{prob}'"
         cursor.execute(query)
         data = {}
-        for (Problema, Consejo, Actividad, Libro) in cursor:
+        for (Problema, Descripcion, Consejo, Actividad, Libro) in cursor:
+            data['Descripcion'] = Descripcion
             data['Consejo'] = Consejo
             data['Actividad'] = Actividad
             data['Libro'] = Libro
