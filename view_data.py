@@ -8,6 +8,8 @@ class data_view:
         # initializations
         self.username = user
         self.datos = self.get_user_persona()
+        self.progreso = self.get_user_progreso()
+        self.consejos = self.get_user_consejos()
 
         self.wind = tk.Tk()
         self.wind.title('Data')
@@ -40,51 +42,51 @@ class data_view:
         self.age.config(state='readonly')
 
         ### Progreso
-        self.progreso = self.get_user_progreso()
+        
         # Frame Container 
         frame_prog = tk.LabelFrame(self.wind, text = 'Progreso')
         frame_prog.grid(row = 4, column = 0, columnspan = 3, pady = 10)
 
         # text problema
         tk.Label(frame_prog, text = 'Problema: ').grid(row = 1, column = 0)
-        self.prob = tk.Text(frame_prog, height=1, width=40)
+        self.prob = tk.Text(frame_prog, height=1, width=50)
         self.prob.insert(tk.END, self.progreso['Problema'])
         self.prob.grid(row = 1, column = 1)
         self.prob.config(state='disabled')
 
+        # text descripcion
+        tk.Label(frame_prog, text = 'Descripcion: ').grid(row = 2, column = 0)
+        self.prob = tk.Text(frame_prog, height=5, width=50)
+        self.prob.insert(tk.END, self.consejos['Descripcion'])
+        self.prob.grid(row = 2, column = 1)
+        self.prob.config(state='disabled')
+
         # text objetivo
-        tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 2, column = 0)
-        self.objet = tk.Text(frame_prog, height=2, width=40)
+        tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 3, column = 0)
+        self.objet = tk.Text(frame_prog, height=2, width=50)
         self.objet.insert(tk.END, self.progreso['Objetivo'])
-        self.objet.grid(row = 2, column = 1)
+        self.objet.grid(row = 3, column = 1)
         self.objet.config(state='disabled')
 
 
         ### Consejo
-        self.consejos = self.get_user_consejos()
+        
         # Frame Container 
         frame_prog = tk.LabelFrame(self.wind, text = 'Recomendaciones')
         frame_prog.grid(row = 7, column = 0, columnspan = 10, pady = 10)
 
         # text consejo
         tk.Label(frame_prog, text = 'Consejo: ').grid(row = 1, column = 0)
-        self.consej = tk.Text(frame_prog, height=3, width=50)
+        self.consej = tk.Text(frame_prog, height=4, width=50)
         self.consej.insert(tk.END, self.consejos['Consejo'])
         self.consej.grid(row = 1, column = 1)
         self.consej.config(state='disabled')
 
-        # text actividad
-        tk.Label(frame_prog, text = 'Actividad: ').grid(row = 2, column = 0)
-        self.activ = tk.Text(frame_prog, height=3, width=50)
-        self.activ.insert(tk.END, self.consejos['Actividad'])
-        self.activ.grid(row = 2, column = 1)
-        self.activ.config(state='disabled')
-
         # text libro
-        tk.Label(frame_prog, text = 'Libro: ').grid(row = 3, column = 0)
+        tk.Label(frame_prog, text = 'Libro: ').grid(row = 2, column = 0)
         self.libr = tk.Text(frame_prog, height=1, width=50)
         self.libr.insert(tk.END, self.consejos['Libro'])
-        self.libr.grid(row = 3, column = 1)
+        self.libr.grid(row = 2, column = 1)
         self.libr.config(state='disabled')
 
         ### Buttons
@@ -129,10 +131,9 @@ class data_view:
         query = f"SELECT * FROM consejos WHERE Problema = '{prob}'"
         dataDB = run_query(query)
         data = {}
-        for (Problema, Descripcion, Consejo, Actividad, Libro) in dataDB:
+        for (Problema, Descripcion, Consejo, Libro) in dataDB:
             data['Descripcion'] = Descripcion
             data['Consejo'] = Consejo
-            data['Actividad'] = Actividad
             data['Libro'] = Libro
 
         return data
