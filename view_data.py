@@ -3,25 +3,6 @@ import tkinter as tk
 from db_utils import db_config
 import mysql.connector
 
-userProfile = {
-    'User': 'maxirpc',
-    'Nombre': 'Maximiliano',
-    'Edad': 31
-}
-
-userProgress = {
-    'User': userProfile['User'],
-    'Problema': 'Ansiedad',
-    'Objetivo': 'controlar la ansiedad generada'
-}
-
-userConsejo = {
-    'Problema': userProgress['Problema'],
-    'Consejo': 'cambiar dieta',
-    'Actividad': 'hacer futbol pa',
-    'Libro': 'libro de harry'
-}
-
 class data_view:
     def __init__(self, user):
         # initializations
@@ -171,7 +152,8 @@ class data_view:
         query = f"SELECT * FROM consejos WHERE Problema = '{prob}'"
         cursor.execute(query)
         data = {}
-        for (Problema, Consejo, Actividad, Libro) in cursor:
+        for (Problema, Descripcion, Consejo, Actividad, Libro) in cursor:
+            data['Descripcion'] = Descripcion
             data['Consejo'] = Consejo
             data['Actividad'] = Actividad
             data['Libro'] = Libro
