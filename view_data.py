@@ -56,10 +56,10 @@ class data_view:
 
         # text descripcion
         tk.Label(frame_prog, text = 'Descripcion: ').grid(row = 2, column = 0)
-        self.prob = tk.Text(frame_prog, height=5, width=50)
-        self.prob.insert(tk.END, self.consejos['Descripcion'])
-        self.prob.grid(row = 2, column = 1)
-        self.prob.config(state='disabled')
+        self.descrip = tk.Text(frame_prog, height=5, width=50)
+        self.descrip.insert(tk.END, self.consejos['Descripcion'])
+        self.descrip.grid(row = 2, column = 1)
+        self.descrip.config(state='disabled')
 
         # text objetivo
         tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 3, column = 0)

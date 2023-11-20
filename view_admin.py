@@ -10,7 +10,7 @@ class admin_view:
         # initializations
         self.wind = tk.Tk()
         self.wind.title('Admin')
-        self.wind.geometry('600x500')
+        self.wind.geometry('600x600')
 
         ### buscar user
         self.listUsers = self.list_users()
@@ -56,10 +56,15 @@ class admin_view:
         self.prob = tk.Text(frame_prog, height=1, width=40)
         self.prob.grid(row = 1, column = 1)
 
+        # text problema
+        tk.Label(frame_prog, text = 'Descripcion: ').grid(row = 2, column = 0)
+        self.descrip = tk.Text(frame_prog, height=5, width=40)
+        self.descrip.grid(row = 2, column = 1)
+
         # text objetivo
-        tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 2, column = 0)
+        tk.Label(frame_prog, text = 'Objetivo: ').grid(row = 3, column = 0)
         self.objet = tk.Text(frame_prog, height=2, width=40)
-        self.objet.grid(row = 2, column = 1)
+        self.objet.grid(row = 3, column = 1)
 
         ### Consejo
         self.consejos = {}
@@ -72,15 +77,10 @@ class admin_view:
         self.consej = tk.Text(frame_prog, height=3, width=50)
         self.consej.grid(row = 1, column = 1)
 
-        # text actividad
-        tk.Label(frame_prog, text = 'Actividad: ').grid(row = 2, column = 0)
-        self.activ = tk.Text(frame_prog, height=3, width=50)
-        self.activ.grid(row = 2, column = 1)
-
         # text libro
-        tk.Label(frame_prog, text = 'Libro: ').grid(row = 3, column = 0)
+        tk.Label(frame_prog, text = 'Libro: ').grid(row = 2, column = 0)
         self.libr = tk.Text(frame_prog, height=1, width=50)
-        self.libr.grid(row = 3, column = 1)
+        self.libr.grid(row = 2, column = 1)
 
         ### Editar
         # Frame Container 
@@ -89,6 +89,10 @@ class admin_view:
         # Button
         btnEditar = tk.Button(frame_btn, text = 'Editar registro', command = self.update_data)
         btnEditar.grid(row = 0, column=0, columnspan = 2, padx = 10)
+        # Button
+        btnAgregar = tk.Button(frame_btn, text = 'Nuevo registro', command = self.new_user)
+        btnAgregar.grid(row = 0, column=3, columnspan = 2)
+
         # Button
         btnAgregar = tk.Button(frame_btn, text = 'Nuevo registro', command = self.new_user)
         btnAgregar.grid(row = 0, column=3, columnspan = 2)
@@ -107,19 +111,11 @@ class admin_view:
 
     # functions
     def list_users(self):
-        cnx = mysql.connector.connect(
-                host = db_config['host'],
-                user = db_config['user'], 
-                database = db_config['database']
-            )
-        cursor = cnx.cursor()
         query = f"SELECT User FROM users"
-        cursor.execute(query)
+        dataDB = run_query(query)
         data = []
-        for (User) in cursor:
+        for (User) in dataDB:
             data.append(User[0])
-        cursor.close()    
-        cnx.close()
         return data
     
 
@@ -127,9 +123,9 @@ class admin_view:
         self.name.delete(0, tk.END)
         self.age.delete(0, tk.END)
         self.prob.delete('1.0', tk.END)
+        self.descrip.delete('1.0', tk.END)
         self.objet.delete('1.0', tk.END)
         self.consej.delete('1.0', tk.END)
-        self.activ.delete('1.0', tk.END)
         self.libr.delete('1.0', tk.END) 
 
     def get_data(self):
@@ -137,7 +133,7 @@ class admin_view:
 
         usr = self.userList.get()
         data = self.get_user_persona(username=usr)
-        print(data)
+        
         self.datos['Nombre'] = data['Nombre']
         self.name.insert(0, self.datos['Nombre'])
         
@@ -152,11 +148,11 @@ class admin_view:
         self.objet.insert(tk.END, self.progreso['Objetivo'])
         
         consej = self.get_user_consejos(probl=self.progreso['Problema'])
+        self.consejos['Descripcion'] = consej['Descripcion']
+        self.descrip.insert(tk.END, self.consejos['Descripcion'])
+
         self.consejos['Consejo'] = consej['Consejo']
         self.consej.insert(tk.END, self.consejos['Consejo'])
-
-        self.consejos['Actividad'] = consej['Actividad']
-        self.activ.insert(tk.END, self.consejos['Actividad'])
 
         self.consejos['Libro'] = consej['Libro']
         self.libr.insert(tk.END, self.consejos['Libro'])    
@@ -189,10 +185,9 @@ class admin_view:
         query = f"SELECT * FROM consejos WHERE Problema = '{prob}'"
         dataDB = run_query(query)
         data = {}
-        for (Problema, Descripcion, Consejo, Actividad, Libro) in dataDB:
+        for (Problema, Descripcion, Consejo, Libro) in dataDB:
             data['Descripcion'] = Descripcion
             data['Consejo'] = Consejo
-            data['Actividad'] = Actividad
             data['Libro'] = Libro
         return data
     
@@ -219,6 +214,8 @@ class admin_view:
     def new_user(self):
         new_user_view()
 
+    def delete_user(self):
+        print('delete')
+
     def exit_session(self):
         self.wind.destroy()
-        
