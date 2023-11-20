@@ -1,7 +1,7 @@
 # imports
 import tkinter as tk
 from tkinter import ttk
-from db_utils import db_config
+from db_utils import db_config, run_query
 import mysql.connector
 
 class new_user_view:
@@ -135,18 +135,10 @@ class new_user_view:
             self.message.config(fg = 'green')
 
     def add_sql(self, query):
-        cnx = mysql.connector.connect(
-            host = db_config['host'],
-            user = db_config['user'], 
-            database = db_config['database']
-        )
-        cursor = cnx.cursor()
         isSave = False
         try:
-            cursor.execute(query)
+            run_query(query)
             isSave = True
         except Exception as e:
             self.message['text'] = f'Error al guardar datos {e}'
-        cursor.close()    
-        cnx.close()
         return isSave
