@@ -54,8 +54,15 @@ class admin_view:
 
         # text problema
         tk.Label(frame_prog, text = 'Problema: ').grid(row = 1, column = 0)
-        self.prob = tk.Text(frame_prog, height=1, width=40)
+        self.prob = ttk.Combobox(frame_prog, height= 1, width = 40, textvariable = tk.StringVar())
+        self.prob['values'] = self.list_problemas()
+        self.prob.current()
         self.prob.grid(row = 1, column = 1)
+        self.prob.bind("<<ComboboxSelected>>", func=self.complete_data)
+
+        # tk.Label(frame_prog, text = 'Problema: ').grid(row = 1, column = 0)
+        # self.prob = tk.Text(frame_prog, height=1, width=40)
+        # self.prob.grid(row = 1, column = 1)
 
         # text problema
         tk.Label(frame_prog, text = 'Descripcion: ').grid(row = 2, column = 0)
@@ -122,12 +129,42 @@ class admin_view:
     def clean_inputs(self):
         self.name.delete(0, tk.END)
         self.age.delete(0, tk.END)
-        self.prob.delete('1.0', tk.END)
+        # self.prob.delete('1.0', tk.END)
         self.descrip.delete('1.0', tk.END)
         self.objet.delete('1.0', tk.END)
         self.consej.delete('1.0', tk.END)
         self.libr.delete('1.0', tk.END) 
 
+    def list_problemas(self):
+        query = f"SELECT Problema FROM consejos"
+        dataDB = run_query(query)
+        data = []
+        for (Problema) in dataDB:
+            data.append(Problema[0])
+        return data
+    
+    def complete_data(self, event):
+        probl = event.widget.get()
+
+        self.descrip.delete('1.0', tk.END)
+        self.consej.delete('1.0', tk.END)
+        self.libr.delete('1.0', tk.END) 
+
+        data = self.get_user_consejos(probl)
+        self.descrip.insert(tk.END, data['Descripcion'])
+        self.consej.insert(tk.END, data['Consejo'])
+        self.libr.insert(tk.END, data['Libro'])
+    
+    def get_user_consejos(self, probl):
+        query = f"SELECT * FROM consejos WHERE Problema = '{probl}'"
+        dataDB = run_query(query)
+        data = {}
+        for (Problema, Descripcion, Consejo, Libro) in dataDB:
+            data['Descripcion'] = Descripcion
+            data['Consejo'] = Consejo
+            data['Libro'] = Libro
+        return data
+    
     def get_data(self):
         self.clean_inputs()
 
@@ -141,21 +178,16 @@ class admin_view:
         self.age.insert(0, self.datos['Edad'])
 
         progres = self.get_user_progreso(username=usr)
-        self.progreso['Problema'] = progres['Problema']
-        self.prob.insert(tk.END, self.progreso['Problema'])
+        listProb = self.list_problemas()
+        index = listProb.index(progres['Problema'])
+        self.prob.current(index)
 
-        self.progreso['Objetivo'] = progres['Objetivo']
-        self.objet.insert(tk.END, self.progreso['Objetivo'])
-        
-        consej = self.get_user_consejos(probl=self.progreso['Problema'])
-        self.consejos['Descripcion'] = consej['Descripcion']
-        self.descrip.insert(tk.END, self.consejos['Descripcion'])
-
-        self.consejos['Consejo'] = consej['Consejo']
-        self.consej.insert(tk.END, self.consejos['Consejo'])
-
-        self.consejos['Libro'] = consej['Libro']
-        self.libr.insert(tk.END, self.consejos['Libro'])    
+        self.objet.insert(tk.END, progres['Objetivo'])
+    
+        consej = self.get_user_consejos(probl=progres['Problema'])
+        self.descrip.insert(tk.END, consej['Descripcion'])
+        self.consej.insert(tk.END,  consej['Consejo'])
+        self.libr.insert(tk.END, consej['Libro'])    
 
     def get_user_persona(self, username):
         usr = username
@@ -178,18 +210,7 @@ class admin_view:
             data['Problema'] = Problema
             data['Objetivo'] = Objetivo
         return data
-    
-    def get_user_consejos(self, probl):
-        prob = probl
 
-        query = f"SELECT * FROM consejos WHERE Problema = '{prob}'"
-        dataDB = run_query(query)
-        data = {}
-        for (Problema, Descripcion, Consejo, Libro) in dataDB:
-            data['Descripcion'] = Descripcion
-            data['Consejo'] = Consejo
-            data['Libro'] = Libro
-        return data
     
     def get_user_login(self):
         usr = self.userList.get()
@@ -208,7 +229,14 @@ class admin_view:
         nombre = self.name.get()
         edad = self.age.get()
         query = f"UPDATE persona SET Nombre = '{nombre}', Edad = '{edad}' WHERE User = '{usr}'"
-        isSave = self.update_sql(query=query)
+        isSave = self.update_sql(query)
+
+        prob = self.prob.get()
+        obje = self.objet.get('1.0', tk.END)
+        obje = obje.rstrip() 
+        query2 = f"UPDATE progreso SET Problema = '{prob}', Objetivo = '{obje}' WHERE User = '{usr}'"
+
+        isSave = self.update_sql(query2)
 
         if isSave:
             self.message['text'] = f'Se actualizaron datos'
@@ -246,7 +274,8 @@ class admin_view:
 
             self.message['text'] = f'Se elimino registro correctamente'
             self.clean_inputs()
-            print('delete')
+
+            self.userList['values'] = self.list_users()
 
     def delete_sql(self, query):
         isSave = False
